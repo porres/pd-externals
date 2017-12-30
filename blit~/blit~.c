@@ -1,6 +1,5 @@
 #include "m_pd.h"
 #include "math.h"
-#include <stdlib.h>
 
 #define TWOPI (M_PI * 2)
 
@@ -36,21 +35,20 @@ static t_int *blit_tilde_perform(t_int *w) {
     double phase = x->x_phase;
 
     while (n--) {
-        int h = *in2 > 0 ? (2 * (*in2)) : (-2 * (*in2));
-        int max_h;
         double incr = *in1 * M_PI * speriod;
-        max_h = *in1 != 0 ? (sr / (*in1)) : sr;
+        int h = *in2 > 0 ? (2 * (*in2)) : (-2 * (*in2));
+        int max_h = *in1 != 0 ? (sr / (*in1)) : sr;
         if (max_h < 0)
             max_h = -max_h;
         if (h > max_h)
             h = max_h;
-        if (phase == 0)
+        if (phase == 0 || phase == M_PI)
             *out++ = 1.0;
         else if (h == 0)
             *out++ = 0.0;
-        else if (*in3 == 0 && (h % 2) == 0 && h > 1)
+        else if (*in3 >= 0 && (h % 2) == 0 && h > 1)
             *out++ = (sin(phase * (h - 1)) / sin(phase)) / (h - 1);
-        else if (*in3 != 0 && (h % 2) == 1 && h > 1)
+        else if (*in3 < 0 && (h % 2) == 1 && h > 1)
             *out++ = (sin(phase * (h - 1)) / sin(phase)) / (h - 1);
         else
             *out++ = (sin(phase * h) / sin(phase)) / h;
