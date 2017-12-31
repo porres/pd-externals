@@ -61,7 +61,7 @@ static t_int *blit_tilde_perform(t_int *w) {
                 max_h = -max_h;
             if (h > max_h)
                 h = max_h;
-                phase -= TWOPI;
+            phase -= TWOPI;
         }
         if (phase < 0.0) {
             h = *in2 > 0 ? (2 * (*in2)) : (-2 * (*in2));
@@ -70,12 +70,11 @@ static t_int *blit_tilde_perform(t_int *w) {
                 max_h = -max_h;
             if (h > max_h)
                 h = max_h;
-                phase += TWOPI;
+            phase += TWOPI;
         }
         in1++;
         in2++;
         in3++;
-
     }
 
     x->x_phase = phase;
