@@ -71,7 +71,7 @@ static t_int *blit_tilde_perform(t_int *w) {
                 max_h = -max_h;
             if (h > max_h)
                 h = max_h;
-        phase += TWOPI;
+            phase += TWOPI;
         }
     }
 
