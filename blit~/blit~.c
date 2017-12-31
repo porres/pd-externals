@@ -22,6 +22,8 @@ static void *blit_tilde_new(void) {
     outlet_new(&x->x_obj, &s_signal);
     x->x_f = 0;
     x->x_phase = 0;
+    x->x_max_h = 0;
+    x->x_h = 0;
     return (x);
 }
 
