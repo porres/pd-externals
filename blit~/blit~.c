@@ -10,6 +10,8 @@ typedef struct _blit_tilde {
   int x_sr;
   double x_speriod;
   double x_phase;
+  int x_max_h;
+  int x_h;
   t_float x_f;
 } t_blit_tilde;
 
@@ -33,15 +35,12 @@ static t_int *blit_tilde_perform(t_int *w) {
     int sr = x->x_sr;
     double speriod = x->x_speriod;
     double phase = x->x_phase;
+    int h = x->x_h;
+    int max_h = x->x_max_h;
+    double incr;
 
     while (n--) {
-        double incr = *in1 * M_PI * speriod;
-        int h = *in2 > 0 ? (2 * (*in2)) : (-2 * (*in2));
-        int max_h = *in1 != 0 ? (sr / (*in1)) : sr;
-        if (max_h < 0)
-            max_h = -max_h;
-        if (h > max_h)
-            h = max_h;
+        incr = *in1 * M_PI * speriod;
         if (phase == 0 || phase == M_PI)
             *out++ = 1.0;
         else if (h == 0)
@@ -56,15 +55,31 @@ static t_int *blit_tilde_perform(t_int *w) {
         in2++;
         in3++;
         phase += incr;
-        if (phase >= TWOPI)
+        if (phase >= TWOPI) {
+            h = *in2 > 0 ? (2 * (*in2)) : (-2 * (*in2));
+            max_h = *in1 != 0 ? (sr / (*in1)) : sr;
+            if (max_h < 0)
+                max_h = -max_h;
+            if (h > max_h)
+                h = max_h;
             phase -= TWOPI;
-        if (phase < 0.0)
-            phase += TWOPI;
+        }
+        if (phase < 0.0) {
+            h = *in2 > 0 ? (2 * (*in2)) : (-2 * (*in2));
+            max_h = *in1 != 0 ? (sr / (*in1)) : sr;
+            if (max_h < 0)
+                max_h = -max_h;
+            if (h > max_h)
+                h = max_h;
+        phase += TWOPI;
+        }
     }
 
     x->x_phase = phase;
+    x->x_max_h = max_h;
+    x->x_h = h;
 
-    return (w+7);
+    return (w + 7);
 }
 
 void blit_tilde_dsp(t_blit_tilde *x, t_signal **sp) {
