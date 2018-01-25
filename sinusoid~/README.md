@@ -4,13 +4,13 @@ An example Pure Data external using [pd-lib-builder](https://github.com/pure-dat
 
 Clone and build this example via:
 
-    git clone --recursive https://github.com/pure-data/helloworld.git
+    git clone --recursive https://github.com/dariosanfilippo/pd-externals.git
     cd helloworld
     make
 
 Make sure you use the `--recursive` flag when checking out the repository so that the pd-lib-builder dependency is also checked out. If you forgot to add it, you can also manually fetch pd-lib-builder via:
 
-    cd helloworld
+    cd sinusoid~
     git submodule init
     git submodule update
 
@@ -30,6 +30,6 @@ See `make help` for more details.
 
 If you are using the [deken](https://github.com/pure-data/deken/) externals packaging tool you can then submit your external to the [puredata.info repository](http://puredata.info) for other people to find, like this:
 
-    deken upload ./build/helloworld
+    deken upload ./build/sinusoid~
 
 You will need to have an account on the site. You probably also want to have a valid GPG key to sign the package so that users can prove that it waas created by you.
